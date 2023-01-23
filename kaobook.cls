@@ -51,7 +51,8 @@
 \let\oldfrontmatter\frontmatter % Store the old command
 \renewcommand{\frontmatter}{%
 	\oldfrontmatter% First of all, call the old command
-	\pagestyle{plain.scrheadings}% Use a plain style for the header and the footer
+	\pagestyle{centeredpagenum.scrheadings}% Use a plain style for the header and the footer
+	\renewcommand*{\chapterpagestyle}{centeredpagenum.scrheadings} % also for chapter pages
 	\pagelayout{wide}% Use a wide page layout
 	\setchapterstyle{plain} % Choose the default chapter heading style
 	% \sloppy % Required to better break long lines
@@ -63,9 +64,10 @@
 \let\oldmainmatter\mainmatter % Store the old command
 \renewcommand{\mainmatter}{%
 	\oldmainmatter% Call the old command
-	\pagestyle{scrheadings}% Use a fancy style for the header and the footer
+	\pagestyle{noncenteredpagenum.scrheadings}% Use a plain style for the header and the footer
+	\renewcommand*{\chapterpagestyle}{noncenteredpagenum.scrheadings} % also for chapter pages
 	\pagelayout{margin}% Use a 1.5 column layout
-	\setchapterstyle{kao} % Choose the default chapter heading style
+	\setchapterstyle{plain} % Choose the default chapter heading style
 }
 
 %------------------------------------------------
@@ -73,6 +75,11 @@
 % Appendix
 \let\oldappendix\appendix% Store the old command
 \renewcommand{\appendix}{%
+	\clearpage % Move to new page.
+	\phantomsection % set PDF anchors
+	{\protect\addcontentsline{toc}{chapter}{Appendices}} % Add the word 'Appendices' to the table of contents.
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} % do not add chapters to TOC from here on
+	\renewcommand{\chaptername}{Appendix}
 	\oldappendix% Call the old command
 	\bookmarksetup{startatroot}% Reset the bookmark depth
 }
@@ -84,7 +91,6 @@
 \renewcommand{\backmatter}{%
 	\oldbackmatter% Call the old command
 	\bookmarksetup{startatroot}% Reset the bookmark depth
-	\pagestyle{plain.scrheadings}% Use a plain style for the header and the footer
 	\pagelayout{wide}% Use a wide page layout
 	\setchapterstyle{plain} % Choose the default chapter heading style
 }
@@ -103,12 +109,16 @@
 
 % The default definition in KOMA script
 \DeclareDocumentCommand{\chapterstyleplain}{}{%
-	\renewcommand{\chapterlinesformat}[3]{%
-		\@hangfrom{##2}{##3}}
+	\renewcommand*{\chapterlineswithprefixformat}[3]{%
+		\centering\parbox{\dimexpr\textwidth+\marginparsep+\marginparwidth}{%
+			\raggedchapter
+			##2##3%
+		}%
+	}
 	\renewcommand*{\chapterformat}{%
 		\mbox{\chapappifchapterprefix{\nobreakspace}\thechapter%
 		\autodot\IfUsePrefixLine{}{\enskip}}}
-	\RedeclareSectionCommand[beforeskip=0cm,afterskip=10\vscale]{chapter}
+	\RedeclareSectionCommand[beforeskip=0cm,afterskip=5\vscale]{chapter}
 	\setlength{\mtocshift}{-1\vscale}
 }
 
@@ -268,9 +278,10 @@
 %----------------------------------------------------------------------------------------
 
 % Set default options regarding the table of contents
-\PassOptionsToClass{toc=listof}{\@baseclass}
-\PassOptionsToClass{toc=index}{\@baseclass}
-\PassOptionsToClass{toc=bibliography}{\@baseclass}
+% \PassOptionsToClass{listof=totoc}{\@baseclass}
+\KOMAoption{listof}{totoc}
+% \PassOptionsToClass{toc=index}{\@baseclass}
+% \PassOptionsToClass{toc=bibliography}{\@baseclass}
 
 %----------------------------------------------------------------------------------------
 %	NUMBERING

@@ -24,24 +24,19 @@
 % Choose the default options, which will be overwritten by the options 
 % passed to this package.
 \PassOptionsToPackage{
-	%style=numeric-comp,
-	%citestyle=authortitle-icomp,
-	citestyle=numeric-comp,
-	%bibstyle=authoryear,
-	bibstyle=numeric,
+	style=numeric-comp,
 	sorting=none,
-	%sorting=nyt,
-	%sortcites=true,
-	%autocite=footnote,
 	backend=biber, % Compile the bibliography with biber
 	hyperref=true,
 	backref=true,
+	backrefstyle=three,
 	citecounter=true,
 	pagetracker=true,
 	citetracker=true,
 	ibidtracker=context,
 	autopunct=true,
-	autocite=plain,
+	maxbibnames=99, % do not show et al.
+	giveninits=true,
 }{biblatex}
 
 % Pass the unknown options to biblatex, overwriting the previous settings. Avoid passing the kao-specific options.

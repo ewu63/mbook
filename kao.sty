@@ -274,12 +274,30 @@
 		\makebox[7\hscale][l]{\thepage}}}}}%
 	{\smash{\makebox[0pt][l]{\makebox[\headtotal][r]{%
 		\makebox[\headtextwidth][r]{\hfill\rightmark}%
-		\makebox[3\hscale]{}\rule[-1mm]{0.5pt}{19\vscale-1mm}\makebox[3\hscale]{}%
-		\makebox[7\hscale][l]{\thepage}}}}}%
+		% \makebox[3\hscale]{}\rule[-1mm]{0.5pt}{19\vscale-1mm}\makebox[3\hscale]{}%
+		\makebox[7\hscale][r]{\thepage}}}}}%
 }{%
 	{}%
 	{}%
 	{}%
+}
+
+% Header style with page number the footer
+\newpagestyle{my.scrheadings}{%
+    {}%
+    {}%
+    {}%
+}{%
+	{\smash{\hspace{-\headmarginparwidth}\hspace{-\headmarginparsep}\makebox[\headtotal][l]{%
+		\makebox[7\hscale][r]{\thepage}%
+		\makebox[3\hscale]{}\rule[-1mm]{0.5pt}{19\vscale-1mm}\makebox[3\hscale]{}%
+		\makebox[\headtextwidth][l]{\leftmark}}}}%
+	{\smash{\makebox[0pt][l]{\makebox[\headtotal][r]{%
+		\makebox[\headtextwidth][r]{\hfill\rightmark}%
+		\makebox[3\hscale]{}\rule[-1mm]{0.5pt}{19\vscale-1mm}\makebox[3\hscale]{}%
+		\makebox[7\hscale][l]{\thepage}}}}}%
+	{\smash{\makebox[0pt][l]{\makebox[\headtotal][r]{%
+		\makebox[7\hscale][c]{\thepage}}}}}%
 }
 
 % Header style with neither header nor footer (used for special pages)
@@ -301,7 +319,7 @@
 }{%
 	{\makebox[\textwidth][r]{\thepage}}%
 	{\makebox[\textwidth][l]{\thepage}}%
-	{\makebox[\textwidth][l]{\thepage}}%
+	{\makebox[\textwidth][c]{\thepage}}%
 }
 
 % Header style with an empty header and the page number in the footer
@@ -313,6 +331,17 @@
 	{\hspace{-\headmarginparwidth}\hspace{-\headmarginparsep}\makebox[\headtotal][l]{\hfill\thepage\hfill}}
 	{\makebox[0pt][l]{\makebox[\headtotal][r]{\hfill\thepage\hfill}}}%
 	{\makebox[0pt][l]{\makebox[\headtotal][r]{\hfill\thepage\hfill}}}%
+}
+
+% Header style with an empty header and the page number in the footer
+\newpagestyle{noncenteredpagenum.scrheadings}{%
+	{\hspace{-\headmarginparwidth}\hspace{-\headmarginparsep}\makebox[\headtotal][l]{\hfill\thepage\hfill}}
+	{\makebox[0pt][l]{\makebox[\headtotal][r]{\hfill\thepage\hfill}}}%
+	{\makebox[0pt][l]{\makebox[\headtotal][r]{\hfill\thepage}}}%
+}{%
+	{}%
+	{}%
+	{}%
 }
 
 % Command to print a blank page
@@ -356,7 +385,7 @@
 	%\singlespacing% Set the space between lines
 	\frenchspacing% No additional space after periods
 	\normalfont% Use the default font
-	\footnotesize% Use a smaller size
+	\scriptsize% Use a smaller size
 }
 
 % By default, use @body@par settings
@@ -409,7 +438,7 @@
 %	FOOTNOTES, MARGINNOTES AND SIDENOTES
 %----------------------------------------------------------------------------------------
 
-\RequirePackage[section]{placeins} % Prevent floats to cross sections
+\RequirePackage{placeins} % Prevent floats to cross sections
 \extrafloats{100} % Require more floats
 
 \RequirePackage{marginnote} % Provides options for margin notes
@@ -594,6 +623,7 @@
 	\marginskip{\kaomarginskipabove}%
 	\begin{lrbox}{\@sidenotes@margintablebox}%
 	\begin{minipage}{\marginparwidth}%
+		\footnotesize% make side table smaller
 		\captionsetup{type=table}%
 }{%
 	\end{minipage}%
@@ -885,10 +915,10 @@
 \RequirePackage{tocbasic} % Required to customise the TOC
 
 % Show an entry for the TOC in the TOC
-\setuptoc{toc}{totoc}
+% \setuptoc{toc}{totoc}
 
 % Choose the levels in table of contents
-\setcounter{tocdepth}{\subsectiontocdepth}
+\setcounter{tocdepth}{\subsubsectiontocdepth}
 
 % Customise the list of listings
 \renewcommand{\lstlistlistingname}{List of Listings}% Change the title
@@ -1076,17 +1106,16 @@
 \newcommand{\kao@fontmethodModern}{%
 	\RequirePackage{amssymb} % Must be loaded before unicode-math
 	\RequirePackage[force]{filehook} % Fixes an error
-	\RequirePackage{unicode-math} % Math fonts in xetexorluatex
-	\setromanfont[ % Libertinus Serif font
-		Scale=1.04
-	]{Libertinus Serif}
-	\setsansfont[ % Libertinus Sans font
-		Scale=1
-	]{Libertinus Sans}
-	\setmonofont[ % Libertinus Mono font
-		Scale=.89
-	]{Liberation Mono}
-	\setmathfont{Libertinus Math} % Libertinus Math font
+	\RequirePackage[bold-style=ISO,math-style=ISO]{unicode-math} % Math fonts in xetexorluatex
+	\setromanfont{Adobe Garamond Pro}
+	\setsansfont{Fira Sans}
+	\setmonofont{Inconsolata}
+	\setmathfont[version=bold]{MinionMath-Bold}
+	\setmathfont{Minion Math}
+	% set fraktur and script fonts
+	\setmathfont[range={\mathfrak,\mathcal,\mathbfcal,\mathscr},StylisticSet=1]{XITS Math}
+	% need to reset this, per Minion Math instructions
+	% \setmathfont[range={}]{MinionMath-Regular.otf}
 	\ifluatex
 	\else
 		\RequirePackage{morewrites} % Fix some errors related to floats (not necessary with LuaLaTeX
@@ -1119,7 +1148,7 @@
 % When using the Palatino (newpxtext) font, it is better to use a 
 % slightly larger stretch.
 %\setstretch{1.10}
-\linespread{1.07} % Give Palatino more leading (space between lines)
+% \linespread{1.07} % Give Palatino more leading (space between lines)
 
 % Fix for the subequation environment (https://tex.stackexchange.com/questions/27053/too-much-space-between-full-paragraph-and-subequations-env)
 \preto\subequations{\ifhmode\unskip\fi}
@@ -1131,7 +1160,7 @@
 \RequirePackage{hyperref} % Required for hyperlinks
 \RequirePackage{bookmark} % Required for pdf bookmarks
 
-\PassOptionsToPackage{hyphens}{url} % Break long URLs and use hyphens to separate the pieces
+\RequirePackage{xurl} % Break long URLs and use hyphens to separate the pieces
 
 % Color settings should be done in the next \hypersetup
 \hypersetup{ % Set up hyperref options
@@ -1140,12 +1169,12 @@
 	%xetex,
 	%pagebackref=true,
 	%hyperfootnotes=false, % We already use footmisc
-	bookmarksdepth=section,
+	bookmarksdepth=subsection,
 	bookmarksopen=true, % Expand the bookmarks as soon as the pdf file is opened
 	%bookmarksopenlevel=4,
 	linktoc=all, % Toc entries and numbers links to pages
 	breaklinks=true,
-	colorlinks=true,
+	colorlinks=false,
 }
 
 % Define a new color for the footnote marks
@@ -1207,22 +1236,22 @@
 	%allcolors=DarkGreen,
 	%anchorcolor=Red,
 	%citecolor=DarkOrange!70!black,
-	citecolor=OliveGreen,
-	filecolor=OliveGreen,
+	citecolor=Black,
+	filecolor=Black,
 	%linkcolor=Blue,
 	linkcolor=Black,
 	%pagecolor = Blue,
 	%menucolor=Red,
 	%runcolor=Red,
-	urlcolor=OliveGreen,
+	urlcolor=Black,
 }
 
 %----------------------------------------------------------------------------------------
 %	ITEMS
 %----------------------------------------------------------------------------------------
 
-\renewcommand{\labelitemi}{\small$\blacktriangleright$} % Use a black triangle for the first level of \item's
-\renewcommand{\labelitemii}{\textbullet} % Use a bullet for the second level of \item's
+%\renewcommand{\labelitemi}{\small$\blacktriangleright$} % Use a black triangle for the first level of \item's
+%\renewcommand{\labelitemii}{\textbullet} % Use a bullet for the second level of \item's
 \RequirePackage[inline]{enumitem} % Used to customise lists (in particular, we don't want to put whitespace between items)
 \setlist[itemize]{noitemsep}
 \setlist[enumerate]{noitemsep}
@@ -1252,12 +1281,16 @@
 	bottomtitle=2pt,
 	sharp corners,
 	boxrule=0pt,
-	titlerule=.4pt,
-	colback=RoyalBlue!25!White,
-	colbacktitle=RoyalBlue!25!White,
+	titlerule=1pt,
+	toprule=0pt,
+	bottomrule=1pt,
+	colback=white,
+	colbacktitle=white,
 	coltitle=black,
 	colframe=black,
+	borderline south={1pt}{0pt}{black},
 	fonttitle=\bfseries,
+	enhanced,
 	#1
 }
 
@@ -1388,7 +1421,7 @@
 
 % Index, glossary and nomenclature
 \RequirePackage{imakeidx}
-\RequirePackage[xindy,toc,numberedsection=nameref]{glossaries}
+\RequirePackage[xindy,toc,acronym,nomain,nogroupskip,nopostdot,nonumberlist,symbols,shortcuts=all]{glossaries-extra}
 \RequirePackage[intoc]{nomencl}
 
 % Commands to print specific words always in the same way
@@ -1415,6 +1448,7 @@
 \newcommand{\eg}{\textit{e.\nobreak\hairsp{}g.}\xspace}
 \newcommand{\vs}{\textit{vs}\xspace}
 \newcommand{\cfr}{\textit{cfr.}\xspace}
+\newcommand{\cf}{\textit{c.\nobreak\hairsp{}f.}\xspace}
 
 % Tables
 \newcommand{\na}{\quad--} % Used in tables for N/A cells
