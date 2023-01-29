@@ -6,8 +6,8 @@
     letterpaper,
     numbers=noenddot, % remove dot at end of chapter/section number headings
     fontsize=12pt, % Base font size
-    twoside=false, % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
-    chapterprefix=true,
+    open=right,
+    % twoside=false, % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
 ]{kaobook}
 
 
@@ -24,14 +24,9 @@
         marginparsep=0.25in,
         marginparwidth=2.25in,
     }
+    \recalchead%
+	\widelayoutfalse%
 }
-
-% \newlength{\margintextwidth}
-% \setlength{\margintextwidth}{2.5in}
-% \newlength{\maintextwidth}
-% \setlength{\maintextwidth}{4.25in}
-% \newlength{\fullwidth}
-% \setlength{\fullwidth}{7in}
 
 % Choose the language
 \RequirePackage[english]{babel}
@@ -272,6 +267,7 @@
 \makeatletter
 \if@twoside
 \else%
+  \KOMAoption{chapterprefix=true}
   \AtBeginDocument{\renewcommand*{\raggedchapter}{\centering}}
 \fi%
 \makeatother

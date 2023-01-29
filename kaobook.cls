@@ -51,8 +51,13 @@
 \let\oldfrontmatter\frontmatter % Store the old command
 \renewcommand{\frontmatter}{%
 	\oldfrontmatter% First of all, call the old command
-	\pagestyle{centeredpagenum.scrheadings}% Use a plain style for the header and the footer
-	\renewcommand*{\chapterpagestyle}{centeredpagenum.scrheadings} % also for chapter pages
+	\if@twoside
+		\pagestyle{pagenum.scrheadings}% Use a plain style for the header and the footer
+		\renewcommand*{\chapterpagestyle}{pagenum.scrheadings}
+	\else
+		\pagestyle{centeredpagenum.scrheadings}% Use a plain style for the header and the footer
+		\renewcommand*{\chapterpagestyle}{centeredpagenum.scrheadings} % also for chapter pages
+	\fi
 	\pagelayout{wide}% Use a wide page layout
 	\setchapterstyle{plain} % Choose the default chapter heading style
 	% \sloppy % Required to better break long lines
@@ -64,10 +69,15 @@
 \let\oldmainmatter\mainmatter % Store the old command
 \renewcommand{\mainmatter}{%
 	\oldmainmatter% Call the old command
-	\pagestyle{noncenteredpagenum.scrheadings}% Use a plain style for the header and the footer
-	\renewcommand*{\chapterpagestyle}{noncenteredpagenum.scrheadings} % also for chapter pages
+	\pagestyle{my.scrheadings}
 	\pagelayout{margin}% Use a 1.5 column layout
-	\setchapterstyle{plain} % Choose the default chapter heading style
+	\if@twoside
+		\renewcommand*{\chapterpagestyle}{plain} % no headers for two side chapter pages
+		\setchapterstyle{kao}
+	\else
+		\renewcommand*{\chapterpagestyle}{my.scrheadings} % same simple header for chapter pages
+		\setchapterstyle{plain} % Choose the default chapter heading style
+	\fi
 }
 
 %------------------------------------------------
