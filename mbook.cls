@@ -170,11 +170,11 @@
 % ---- Dedication -----------------------------------------------------
 
 \renewcommand{\dedication}[1]{
-    \cleardoublepage
+    \cleardoubleevenpage
     \pagestyle{pagenum.scrheadings}% Use a plain style for the header and the footer
     \renewcommand*{\chapterpagestyle}{pagenum.scrheadings}
     \thispagestyle{empty}
-    \setcounter{page}{2} % this is page 2
+    \setcounter{page}{3} % this is page 2
     \phantomsection\addcontentsline{toc}{chapter}{Dedication} % add to TOC
     \begin{center}
         \vspace*{1.5in}
