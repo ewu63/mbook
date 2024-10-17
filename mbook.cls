@@ -125,12 +125,24 @@
 % Command that holds the name of the copyright holder
 \newcommand{\@copyright}{\@author}
 \newcommand{\@orcid}{Insert an ORCID!}
-\newcommand{\@uniqname}{Insert a uniqname!}
+\newcommand{\@uniqname}{}
 
 % Command to change it from the default
 \newcommand{\copyrightholder}[1]{\renewcommand{\@copyright}{#1}}
 \newcommand{\orcid}[1]{\renewcommand{\@orcid}{#1}}
 \newcommand{\uniqname}[1]{\renewcommand{\@uniqname}{#1}}
+
+% Special handling to permit empty uniqname
+\newif\ifuniqname
+\uniqnamefalse
+\def\@uniqname{}
+\newcommand{\uniqnamecheck}{%
+    \ifx\@uniqname\empty
+    \uniqnamefalse
+    \else
+    \uniqnametrue
+    \fi
+}
 
 % Command to insert it
 \newcommand{\insertcopyrightholder}{\@copyright}
@@ -147,7 +159,8 @@
   \ \vfill %
   % Insert the frontispiece.
   \insertauthor \\[2ex] %
-  \insertuniqname \\[2ex] %
+  \uniqnamecheck
+  \ifuniqname\insertuniqname \\[2ex] \else\fi
   \insertorcid \\[2ex] %
   \ \\[2ex] %
   \copyright\ \insertcopyrightholder\ \insertyear \\
