@@ -52,8 +52,7 @@
 \renewcommand{\frontmatter}{%
 	\oldfrontmatter% First of all, call the old command
 	\if@twoside
-		\pagestyle{pagenum.scrheadings}% Use a plain style for the header and the footer
-		\renewcommand*{\chapterpagestyle}{pagenum.scrheadings}
+		\pagestyle{empty} % set the actual page style when we issue the dedication
 	\else
 		\pagestyle{centeredpagenum.scrheadings}% Use a plain style for the header and the footer
 		\renewcommand*{\chapterpagestyle}{centeredpagenum.scrheadings} % also for chapter pages
@@ -68,6 +67,7 @@
 % Main matter
 \let\oldmainmatter\mainmatter % Store the old command
 \renewcommand{\mainmatter}{%
+	\recalchead%
 	\oldmainmatter% Call the old command
 	\pagestyle{my.scrheadings}
 	\pagelayout{margin}% Use a 1.5 column layout
@@ -103,6 +103,10 @@
 	\bookmarksetup{startatroot}% Reset the bookmark depth
 	\pagelayout{wide}% Use a wide page layout
 	\setchapterstyle{plain} % Choose the default chapter heading style
+	% Add the bibliography heading to the ToC, set the title of the bibliography and output the bibliography note
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{0}} % reset this to allow bibliography in TOC
+	\singlespacing
+	\setlength\bibitemsep{2ex}
 }
 
 %----------------------------------------------------------------------------------------

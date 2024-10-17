@@ -72,6 +72,7 @@
 % This redefines the title page to automatically have all of the
 % features and properties that it should according to the guidelines.
 \renewcommand*{\maketitle}{
+    \pdfbookmark[0]{\@title}{title}%title to PDF bookmark
     \begin{titlepage}
  % Use single-spaced lines for the title page.
  \begin{singlespace} %
@@ -170,6 +171,9 @@
 
 \renewcommand{\dedication}[1]{
     \cleardoublepage
+    \pagestyle{pagenum.scrheadings}% Use a plain style for the header and the footer
+    \renewcommand*{\chapterpagestyle}{pagenum.scrheadings}
+    \thispagestyle{empty}
     \setcounter{page}{2} % this is page 2
     \phantomsection\addcontentsline{toc}{chapter}{Dedication} % add to TOC
     \begin{center}
@@ -191,6 +195,7 @@
 \renewcaptionname{english}{\contentsname}{Table of Contents}
 
 % set chapter top margin to 2in
+% don't ask me why 1.1in == 2in here
 \renewcommand{\chapterheadstartvskip}{\vspace*{1.1in-\topskip}}
 
 % acronym
